@@ -31,11 +31,12 @@ public class LinkService {
         int upperLimit = 122;
         Random random = new Random();
         StringBuffer r = new StringBuffer(7);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 3; i++) {
             int nextRandomChar = lowerLimit
                     + (int) (random.nextFloat()
                     * (upperLimit - lowerLimit + 1));
             r.append((char) nextRandomChar);
+            r.append(random.nextInt(20));
         }
         return r.toString();
     }
