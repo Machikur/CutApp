@@ -14,7 +14,7 @@ public class LinkService {
     private LinkRepository linkRepository;
 
     public Link saveLink(String url) {
-        if (linkRepository.findById(url).isPresent()) {
+        if (linkRepository.findByUrl(url).isPresent()) {
             return linkRepository.findById(url).get();
         } else {
             return linkRepository.save(new Link(url, randomStringGenerator()));
@@ -36,7 +36,7 @@ public class LinkService {
                     + (int) (random.nextFloat()
                     * (upperLimit - lowerLimit + 1));
             r.append((char) nextRandomChar);
-            r.append(random.nextInt(20));
+            r.append(random.nextInt(100));
         }
         return r.toString();
     }

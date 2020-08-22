@@ -1,10 +1,11 @@
 package com.urlcuter.cuter.controller;
 
-import com.urlcuter.cuter.serlvetresponse.SerlvetResponse;
+import com.urlcuter.cuter.linkexception.WrongShortVersionExeption;
 import com.urlcuter.cuter.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -12,20 +13,30 @@ import java.io.IOException;
 @RequestMapping("/cut")
 public class LinkController {
 
-    @Autowired
-    private LinkService linkService;
+    private final LinkService linkService;
+
+    private final HttpServletResponse httpServletResponse;
 
     @Autowired
-    private SerlvetResponse serlvetResponse;
+    public LinkController(final HttpServletResponse httpServletResponse, final LinkService linkService) {
+        this.httpServletResponse = httpServletResponse;
+        this.linkService = linkService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "link")
+    }
+
+    @PostMapping(value = "link")
     public String saveLink(@RequestBody String url) {
-        return  "http://localhost:8080/cut/" + linkService.saveLink(url).getShortVersion();
+        return "http://localhost:8080/cut/" + linkService.saveLink(url).getShortVersion();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "{shorted}")
-    public void getShort(@PathVariable String shorted) throws IOException {
-        serlvetResponse.sendRedirect(linkService.getUrlByShortVersion(shorted));
+    @GetMapping(value = "{shorted}")
+    public void getShort(@PathVariable String shorted) throws WrongShortVersionExeption {
+        try {
+            httpServletResponse.sendRedirect(linkService.getUrlByShortVersion(shorted));
+        } catch (IOException s) {
+            throw new WrongShortVersionExeption("Wrong Url");
+        }
     }
+
 
 }
