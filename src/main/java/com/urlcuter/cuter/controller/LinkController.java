@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 @RestController
-@RequestMapping("/cut")
+@RequestMapping("/")
 public class LinkController {
 
     private final LinkService linkService;
-
     private final HttpServletResponse httpServletResponse;
 
     @Autowired
@@ -23,19 +23,9 @@ public class LinkController {
         this.linkService = linkService;
 
     }
-
-    @PostMapping(value = "link")
-    public String saveLink(@RequestBody String url) {
-        return "http://localhost:8080/cut/" + linkService.saveLink(url).getShortVersion();
-    }
-
     @GetMapping(value = "{shorted}")
-    public void getShort(@PathVariable String shorted) throws WrongShortVersionExeption {
-        try {
-            httpServletResponse.sendRedirect(linkService.getUrlByShortVersion(shorted));
-        } catch (IOException s) {
-            throw new WrongShortVersionExeption("Wrong Url");
-        }
+    public void getShort(@PathVariable String shorted) throws WrongShortVersionExeption, IOException, URISyntaxException {
+        httpServletResponse.sendRedirect(linkService.getUrlByShortVersion(shorted));
     }
 
 

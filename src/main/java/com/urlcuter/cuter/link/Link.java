@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,21 +16,20 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Entity
 @Getter
+@Setter
 public class Link {
-
-    @Id
-    @GeneratedValue
-    @NotNull
-    @Column(unique = true)
-    private Long id;
 
     @NotNull
     @Column(name="url",unique =true)
     private String url;
 
-    @NotNull
     @Column(name="shortVersion",unique = true)
-    private String shortVersion;
+    private String shortVersion=null;
+
+    @Id
+    @GeneratedValue
+    @Column(unique = true)
+    private Long id;
 
     public Link(String url,String shortVersion){
         this.url=url;

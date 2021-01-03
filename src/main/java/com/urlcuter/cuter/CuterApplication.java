@@ -3,6 +3,8 @@ package com.urlcuter.cuter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.servlet.http.HttpServletResponseWrapper;
+
 @SpringBootApplication
 public class CuterApplication {
 
